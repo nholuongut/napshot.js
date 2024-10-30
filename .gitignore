@@ -1,0 +1,5 @@
+/node_modules
+/example/client/js/vendor
+!/example/client/js/vendor/.gitkeep
+/.idea
+generate-words.rb

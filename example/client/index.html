@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Snapshot.js Example</title>
+    <script type="text/javascript" src="js/vendor/socket.io-client/dist/socket.io.js"></script>
+    <script type="text/javascript" src="js/vendor/jquery/jquery.js"></script>
+    <script type="text/javascript" src="js/vendor/angular/angular.js"></script>
+    <script type="text/javascript" src="./js/application.js"></script>
+    <script type="text/javascript" src="./js/controller.js"></script>
+    <script type="text/javascript" src="./js/environment.js"></script>
+    <link rel="stylesheet" type="text/css" href="js/vendor/semantic/build/packaged/css/semantic.css" />
+    <link rel="stylesheet" type="text/css" href="./css/default.css" />
+
+</head>
+<body ng-app="app">
+
+    <section class="content" ng-controller="IndexController">
+
+        <h2 class="ui header">
+            Displaying {{stats.models.current | number: 0}} of {{stats.models.total | number: 0}}.
+            <div class="sub header">Last Snapshot.js operation took ~{{stats.responseTime}} milliseconds.</div>
+        </h2>
+
+        <h3 class="ui header">
+            Pagination (Page {{stats.pages.current}} of {{stats.pages.total | number: 0}}):
+            <div class="ui breadcrumb sub header">
+                <a class="section previous-page" ng-click="previousPage()">Previous Page</a>
+                <div class="divider"> / </div>
+                <a class="section next-page" ng-click="nextPage()">Next Page</a>
+            </div>
+        </h3>
+
+        <h5 class="ui header">
+            Words Per Page (Currently {{stats.pages.perPage | number: 0}}):
+            <div class="ui breadcrumb sub header">
+                <a class="section" ng-click="perPage(5)">5</a>
+                <div class="divider"> / </div>
+                <a class="section" ng-click="perPage(10)">10</a>
+                <div class="divider"> / </div>
+                <a class="section" ng-click="perPage(25)">25</a>
+                <div class="divider"> / </div>
+                <a class="section" ng-click="perPage(50)">50</a>
+                <div class="divider"> / </div>
+                <a class="section" ng-click="perPage(100)">100</a>
+                <div class="divider"> / </div>
+                <a class="section" ng-click="perPage(0)">All</a>
+            </div>
+        </h5>
+
+        <div class="ui action input">
+            <input name="filter" id="filter" type="text" placeholder="Filter down the collection of words..." ng-model="filter" style="width: 350px;">
+            <div class="ui buttons">
+                <div class="ui blue button" ng-click="applyFilter(filter)">
+                    <i class="search icon"></i>
+                    Apply
+                </div>
+                <div class="ui grey button" ng-click="clearFilter()">Clear</div>
+            </div>
+        </div>
+
+        <div class="ui blue message" ng-hide="collection.length">
+            Please wait a moment whilst Node.js downloads random words from Wordnik&hellip;
+        </div>
+
+        <table class="ui table sortable segment" ng-show="collection.length">
+            <thead>
+                <tr>
+                    <th class="sort-by-id" ng-click="sortBy('id')" style="width: 175px;">
+                        Primary Key
+                        ({{stats.ranges.id.min}}&ndash;{{stats.ranges.id.max}})
+                    </th>
+                    <th class="sort-by-word" ng-click="sortBy('word')">Word</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="model in collection">
+                    <td>{{model.id}}</td>
+                    <td>{{model.word}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </section>
+
+</body>
+</html>
